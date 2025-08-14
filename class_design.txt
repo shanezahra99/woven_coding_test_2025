@@ -1,0 +1,30 @@
+## Class Design / Initial Notes (SZ)
+
+User class
+- first name
+- Money
+- property owned
+- current space?? [which index they are in the array]
+- is bankrupt (boolean)
+
+
+Game class
+- Game turn / tick 
+- Win / loss conditions
+- board logic
+- dice logic
+- pass go logic
+- property logic
+
+User Interface Class
+- holds ui for console 
+
+Main 
+- Initiate game ui in console
+
+Board
+- [0, 1, 2, 3, 4, 5, 6, 7, 8]
+- length == items in the board dict array.
+- players increment 1 movement every turn / tick
+- once they reach end of array they start at 0 again.
+- current position in array is recorded in user class
