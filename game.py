@@ -34,12 +34,10 @@ class Game:
         current_player = self.get_current_player()
         for property_index, property in enumerate(self.board):
            if current_player.current_position == property_index:
-               print(f"current property: {property['name']}")
                return property
            
-    def get_current_roll(self):
-        for roll_index, roll in enumerate(self.rolls):  # i is the roll index, roll is the value
-            return roll
+    def get_current_roll(self, roll_index):
+        return self.rolls[roll_index]
     
 
     def pass_go():
@@ -51,9 +49,9 @@ class Game:
     
     # player logic possibly move to player class
 
-    def player_movement(self): # may need to rename / split up this function into smaller parts.
+    def player_movement(self, roll): # may need to rename / split up this function into smaller parts.
         current_player = self.get_current_player()
-        current_player.current_position += self.get_current_roll() # Moves the current player by the roll value
+        current_player.current_position += roll # Moves the current player by the roll value
 
     
     # property logic
@@ -63,24 +61,30 @@ class Game:
         current_property = self.get_current_property()
 
         ## May need an owner == variable?
-        # owner = None
+        owner = None
 
         for player in self.players:
             if current_property['name'] in player.property_owned: # checks if someone owns the property
                 print(f"{player.first_name} owns {current_property['name']}")
-                
-                ## Make current player pay rent to this player
+                owner = player
+                break
 
-            else:
-                print(f"{player.first_name} does not own {current_property['name']}")
+        if not owner:
+            print(f"There is no owner {current_player.first_name} must buy the property")
 
-                # Make current player buy the property
+            # purchase property
+            print(f"{current_player.first_name} has {current_player.money}")
+            current_player.money -= current_property['price'] 
+            current_player.property_owned.append(current_property['name'])
+            print(f"{current_player.first_name} has {current_player.money}")
+        
+        elif owner == current_player:
+            print(f"{current_player.first_name} already owns {current_property['name']}")
 
-                print(f"{current_player.first_name} has {current_player.money}")
-                current_player.money -= current_property['price'] 
-                current_player.property_owned.append(current_property['name'])
-                print(f"{current_player.first_name} has {current_player.money}")
-                break # this is a cheat way out of the loop test this
+        else:
+            print(f"{current_player.first_name} must pay rent for {current_property['name']} to {owner.first_name}")
+
+            # Make current player buy the property
 
 
 
@@ -89,6 +93,26 @@ class Game:
         current_player.money -= 1
     
 
+    def game_loop(self):
+
+        print("-------------")
+        print("Starting Game")
+        print("-------------")
+        print("players:")
+        print("-------------")
+        for p in my_game.players:
+            print(p.first_name)
+        print("-------------")
+
+        for roll_index, roll in enumerate(self.rolls):
+            current_roll = self.get_current_roll(roll_index) 
+            my_game.player_movement(current_roll)
+            my_game.get_current_property()
+            my_game.buy_property()
+            my_game.next_turn()
+            print(" ")
+
+    
     # world Logic
     def game_board(self):
         try:
@@ -124,47 +148,6 @@ class Game:
 
 # === Main ===
 if __name__ == "__main__":
-    print("-------------")
-    print("Starting Game")
-    print("-------------")
     my_game = Game()
-    print("players:")
-    print("-------------")
-    for p in my_game.players:
-        print(p.first_name)
-    print("-------------")
-
-
-    my_game.get_current_property()
-    my_game.get_current_roll()
-    my_game.player_movement()
-    my_game.buy_property()
-    my_game.next_turn()
-
-    print(" ")
-
-    my_game.get_current_property()
-    my_game.get_current_roll()
-    my_game.player_movement()
-    my_game.buy_property()
-    my_game.next_turn()
-    
-    print(" ")
-
-    my_game.get_current_property()
-    my_game.get_current_roll()
-    my_game.player_movement()
-    my_game.buy_property()
-    my_game.next_turn()
-
-    print(" ")
-
-    my_game.get_current_property()
-    my_game.get_current_roll()
-    my_game.player_movement()
-    my_game.buy_property()
-    my_game.next_turn()
-    
-    print(" ")
-
+    my_game.game_loop()
 
