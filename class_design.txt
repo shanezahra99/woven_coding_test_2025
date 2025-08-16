@@ -1,5 +1,36 @@
 ## Class Design / Initial Notes (SZ)
 
+indexes 
+
+current_turn = 0
+board [0, 1, 2, 3, 4, 5, 6, 7, 8]
+roll [0 , 1, 2, 3]
+Player [0 , 1, 2, 3]
+board_poisition == player.current_poisition after roll.
+
+utility functions
+get_current_player
+get_board_position
+get_current_roll
+
+
+example turn 1st turn
+------------
+player = 0
+roll = 0
+board_poisition = players current poisition after roll.
+------------
+
+example turn 1st turn
+------------
+player = 0
+roll = 0
+board_poisition = players current poisition after roll.
+------------
+
+
+
+
 User class
 - first name
 - Money

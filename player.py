@@ -8,6 +8,9 @@
 
 class Player:
   def __init__(self, first_name, money=16, property_owned=None, current_position=0, is_bankrupt=False):
+    
+    if property_owned is None: # handles none issue when iterating
+        property_owned = [] 
     self.first_name = first_name
     self.money = money
     self.property_owned = property_owned
