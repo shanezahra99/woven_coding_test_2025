@@ -179,26 +179,27 @@ class Game:
         except json.JSONDecodeError:
             print("Error: Could not decode JSON from file.")
 
+
     def dice_roll(self):
-        # Dice rolls 1
+
+        select_game = input("Select game version (1 or 2): ").strip()
+
+        if select_game == "1":
+            filename = "rolls_1.json"
+        elif select_game == "2":
+            filename = "rolls_2.json"
+        else:
+            print("Invalid choice, defaulting to game 1")
+            filename = "rolls_1.json"
+
         try:
-            with open('rolls_1.json', 'r') as file:
-                rolls1_data = json.load(file)
-                return rolls1_data
+            with open(filename, 'r') as file:
+                rolls_data = json.load(file)
+                return rolls_data
         except FileNotFoundError:
             print("Error: file not found.")
         except json.JSONDecodeError:
             print("Error: Could not decode JSON from file.")
-
-        # # Dice rolls 2 find an way to simulate the second roll later on
-        # try:
-        #     with open('rolls_2.json', 'r') as file:
-        #         rolls2_data = json.load(file)
-        #         return rolls2_data
-        # except FileNotFoundError:
-        #     print("Error: file not found.")
-        # except json.JSONDecodeError:
-        #     print("Error: Could not decode JSON from file.")
 
 
 # === Main ===
