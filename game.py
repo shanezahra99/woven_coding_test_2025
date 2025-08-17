@@ -48,16 +48,6 @@ class Game:
                 board_visual += f"| {property['name']} ${price} |"
         print(board_visual + '\n' )
 
-    def get_properties_owned(self):
-        for player in self.players:
-            print(' ')
-            print(f'{player.first_name}: Owned Properties: {player.property_owned}')
-            print(' ')
-    
-    # def owns_all_colours(self):
-    #     coloured_properties = self.get_properties_owned()
-    #     print(coloured_properties)
-
     def get_current_roll(self, roll_index):
         print(f"Rolled: {self.rolls[roll_index]}")
         return self.rolls[roll_index]
@@ -108,6 +98,7 @@ class Game:
         owner = None
         print(f"{current_player.first_name} currently has ${current_player.money}")
         print(f'{current_player.first_name} landed on property {current_property['name']}')
+        colour = current_property.get('colour')
         
 
         for player in self.players:
@@ -131,20 +122,26 @@ class Game:
         elif owner == current_player:
             print(f"{current_player.first_name} already owns {current_property['name']}")
 
-        else:
-            print(f"{current_player.first_name} must pay rent for {current_property['name']} to {owner.first_name}")
-            self.pay_rent()
+        elif colour: # Colour checking for rent multiplier
+            owner_colours = [property.get('colour') for property in owner.property_owned if property.get('type') == 'property']
+            total_colour_count = sum(1 for property in self.board if property.get('colour') == colour)
+
+            if owner_colours.count(colour) == total_colour_count:
+                print(f"{owner.first_name} owns all {colour} properties! Rent is doubled.")
+                self.pay_rent(rent_multiplier=2)
+
+            else: # pay normal rent
+                print(f"{current_player.first_name} must pay rent for {current_property['name']} to {owner.first_name}")
+                self.pay_rent()
 
         print(f"{current_player.first_name} has ${current_player.money} left")
 
-
-    def pay_rent(self):
-        ## need to test and add logic for double payments
+    def pay_rent(self, rent_multiplier=1):
         current_player = self.get_current_player()
         current_property = self.get_current_property()
-        print(f'{current_player.first_name} Pays Rent of ${current_property.get('price', 0)}')
-        current_player.money -= current_property.get('price', 0)
-    
+        print(f"{current_player.first_name} Pays Rent of ${current_property.get('price', 0) * rent_multiplier}")
+        current_player.money -= current_property.get('price', 0) * rent_multiplier
+
 
     # world Logic
 
@@ -164,8 +161,7 @@ class Game:
             my_game.player_movement(current_roll)
             my_game.board_ui()
             my_game.buy_property()
-            # my_game.get_properties_owned()
-            # my_game.owns_all_colours()
+
             if len(my_game.check_winner()) > 0:
                 print("Game Over")
                 exit()
