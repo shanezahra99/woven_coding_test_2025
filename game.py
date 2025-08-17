@@ -53,19 +53,36 @@ class Game:
     def player_movement(self, roll):
         current_player = self.get_current_player()
 
-        if current_player.current_position + roll >= 9:
+        if current_player.current_position + roll >= len(self.board):
             print(f'{current_player.first_name} passed go and gets 1$')
             self.pass_go()
 
-        current_player.current_position = (current_player.current_position + roll) % 9 # Moves the current player by the roll value and loops past go
+        current_player.current_position = (current_player.current_position + roll) % len(self.board) # Moves the current player by the roll value and loops past go
 
     def check_winner(self):
         # check all players balance, if its <=0 whoever has the most money wins
+
+        game_over = False
+
         for player in self.players:
-            print(player.money)
             if player.money <= 0:
                 print(f'{player.first_name} is Bankrupt!')
-                player.is_bankrupt == True
+                player.is_bankrupt = True
+                game_over = True
+
+        winners = []
+
+        if game_over:
+            most_money = -1
+            for player in self.players:
+                if player.money > most_money:
+                    most_money = player.money
+                    winners = [player]
+                elif player.money == most_money:
+                    winners.append(player)
+
+        return winners
+
     # property logic
 
     def buy_property(self): # maybe move to player class
@@ -86,7 +103,8 @@ class Game:
 
             # purchase property
             print(f"{current_player.first_name} has {current_player.money}")
-            current_player.money -= current_property['price'] 
+            print(f"current property ******: {current_property}")
+            current_player.money -= current_property.get('price', 0)
             current_player.property_owned.append(current_property)
             print(f"{current_player.first_name} has {current_player.money}")
         
@@ -104,7 +122,7 @@ class Game:
         current_property = self.get_current_property()
         print(current_player.first_name, 'pays rent:')
         print(current_player.first_name, current_player.money)
-        current_player.money -= current_property['price']
+        current_player.money -= current_property.get('price', 0)
         print(current_player.first_name, current_player.money)
     
 
@@ -125,7 +143,11 @@ class Game:
             my_game.buy_property()
             # my_game.get_properties_owned()
             # my_game.owns_all_colours()
-            my_game.check_winner()
+
+            if len(my_game.check_winner()) > 0:
+                print("Game Over")
+                exit()
+
             my_game.next_turn()
             print(" ")
 
@@ -144,7 +166,7 @@ class Game:
     def dice_roll(self):
         # Dice rolls 1
         try:
-            with open('rolls_testing.json', 'r') as file:
+            with open('rolls_1.json', 'r') as file:
                 rolls1_data = json.load(file)
                 return rolls1_data
         except FileNotFoundError:
