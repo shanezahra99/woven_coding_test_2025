@@ -56,8 +56,6 @@ class Game:
     def buy_property(self): # maybe move to player class
         current_player = self.get_current_player()
         current_property = self.get_current_property()
-
-        ## May need an owner == variable?
         owner = None
 
         print(f'current player: {current_player.first_name}, current property: {current_property}')
@@ -82,14 +80,17 @@ class Game:
 
         else:
             print(f"{current_player.first_name} must pay rent for {current_property['name']} to {owner.first_name}")
-
-            # Make current player buy the property
-
+            self.pay_rent()
 
 
     def pay_rent(self):
+        ## need to test and add logic for double payments
         current_player = self.get_current_player()
-        current_player.money -= 1
+        current_property = self.get_current_property()
+        print(current_player.first_name, 'pays rent:')
+        print(current_player.first_name, current_player.money)
+        current_player.money -= current_property['price']
+        print(current_player.first_name, current_player.money)
     
 
     def game_loop(self):
