@@ -33,13 +33,28 @@ class Game:
     def get_current_property(self): # returns the property the current player is on
         current_player = self.get_current_player()
         for property_index, property in enumerate(self.board):
-        #    print(f'property index: {property_index}, property: {property}')
            if current_player.current_position == property_index:
                return property
            
-    def get_current_roll(self, roll_index):
-        return self.rolls[roll_index]
+    def board_ui(self):
+        current_player = self.get_current_player()
+        board_visual = "" + '\n'
+        for property_index, property in enumerate(self.board):
+            if current_player.current_position == property_index:
+                board_visual += f"| 💎{current_player.first_name}💎 {property['name']} |"
+            else:
+                board_visual += f"| {property['name']} |"
+        print(board_visual + '\n' )
+
+    def get_properties_owned(self):
+        for player in self.players:
+            print(' ')
+            print(f'{player.first_name}: Owned Properties: {player.property_owned}')
+            print(' ')
     
+    # def owns_all_colours(self):
+    #     coloured_properties = self.get_properties_owned()
+    #     print(coloured_properties)
 
     def get_current_roll(self, roll_index):
         return self.rolls[roll_index]
@@ -80,7 +95,6 @@ class Game:
                     winners = [player]
                 elif player.money == most_money:
                     winners.append(player)
-
         return winners
 
     # property logic
@@ -89,25 +103,26 @@ class Game:
         current_player = self.get_current_player()
         current_property = self.get_current_property()
         owner = None
-
-        print(f'current player: {current_player.first_name}, current property: {current_property}')
+        print(f'{current_player.first_name} landed on property {current_property['name']}')
 
         for player in self.players:
             if current_property in player.property_owned: # checks if someone owns the property
-                print(f"{player.first_name} owns {current_property}")
+                print(f"{player.first_name} owns {current_property['name']}")
                 owner = player
                 break
 
         if not owner:
-            print(f"There is no owner {current_player.first_name} must buy the property")
 
-            # purchase property
-            print(f"{current_player.first_name} has {current_player.money}")
-            print(f"current property ******: {current_property}")
-            current_player.money -= current_property.get('price', 0)
-            current_player.property_owned.append(current_property)
-            print(f"{current_player.first_name} has {current_player.money}")
-        
+            if current_property['name'] == 'GO':
+                pass
+            else:
+
+                print(f"There is no owner {current_player.first_name} must buy the property")
+                # purchase property
+                current_player.money -= current_property.get('price', 0)
+                if current_property.get('type') == 'property':
+                    current_player.property_owned.append(current_property)
+    
         elif owner == current_player:
             print(f"{current_player.first_name} already owns {current_property['name']}")
 
@@ -115,16 +130,18 @@ class Game:
             print(f"{current_player.first_name} must pay rent for {current_property['name']} to {owner.first_name}")
             self.pay_rent()
 
+        print(f"{current_player.first_name} has ${current_player.money} left")
+
 
     def pay_rent(self):
         ## need to test and add logic for double payments
         current_player = self.get_current_player()
         current_property = self.get_current_property()
-        print(current_player.first_name, 'pays rent:')
-        print(current_player.first_name, current_player.money)
+        print(f'{current_player.first_name} Pays Rent of ${current_property.get('price', 0)}')
         current_player.money -= current_property.get('price', 0)
-        print(current_player.first_name, current_player.money)
     
+
+    # world Logic
 
     def game_loop(self):
 
@@ -140,19 +157,17 @@ class Game:
         for roll_index, roll in enumerate(self.rolls):
             current_roll = self.get_current_roll(roll_index) 
             my_game.player_movement(current_roll)
+            my_game.board_ui()
             my_game.buy_property()
             # my_game.get_properties_owned()
             # my_game.owns_all_colours()
-
             if len(my_game.check_winner()) > 0:
                 print("Game Over")
                 exit()
 
             my_game.next_turn()
-            print(" ")
-
+            print("----------------------------------------------------")
     
-    # world Logic
     def game_board(self):
         try:
             with open('board.json', 'r') as file:
