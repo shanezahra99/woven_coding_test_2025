@@ -22,7 +22,18 @@ class Game:
         p2 = Player("Billy")
         p3 = Player("Charlotte")
         p4 = Player("Sweedal")
-        self.players.extend([p1, p2, p3, p4]) # Store the players in a list.
+        p5 = Player("Alice")
+        p6 = Player("Bob")
+        p7 = Player("Eve")
+        p8 = Player("Frank")
+        p9 = Player("Grace")
+        p10 = Player("Hank")
+        p11 = Player("Ivy")
+        p12 = Player("Jack")
+        p13 = Player("Karen")
+        p14 = Player("Leo")
+
+        self.players.extend([p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14])
 
     def get_current_player(self):
         return self.players[self.current_turn]

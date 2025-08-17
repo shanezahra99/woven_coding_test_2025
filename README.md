@@ -3,6 +3,9 @@
 1. Run main.py
 2. Input 1 for game 1 or 2 for game 2
 
+## Scalability
+1. Additional spaces on the board and players can be added to this game.
+
 
 ## Woven coding test
 
