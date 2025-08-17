@@ -59,6 +59,13 @@ class Game:
 
         current_player.current_position = (current_player.current_position + roll) % 9 # Moves the current player by the roll value and loops past go
 
+    def check_winner(self):
+        # check all players balance, if its <=0 whoever has the most money wins
+        for player in self.players:
+            print(player.money)
+            if player.money <= 0:
+                print(f'{player.first_name} is Bankrupt!')
+                player.is_bankrupt == True
     # property logic
 
     def buy_property(self): # maybe move to player class
@@ -115,8 +122,10 @@ class Game:
         for roll_index, roll in enumerate(self.rolls):
             current_roll = self.get_current_roll(roll_index) 
             my_game.player_movement(current_roll)
-            my_game.get_current_property()
             my_game.buy_property()
+            # my_game.get_properties_owned()
+            # my_game.owns_all_colours()
+            my_game.check_winner()
             my_game.next_turn()
             print(" ")
 
