@@ -33,6 +33,7 @@ class Game:
     def get_current_property(self): # returns the property the current player is on
         current_player = self.get_current_player()
         for property_index, property in enumerate(self.board):
+        #    print(f'property index: {property_index}, property: {property}')
            if current_player.current_position == property_index:
                return property
            
@@ -43,14 +44,21 @@ class Game:
     def get_current_roll(self, roll_index):
         return self.rolls[roll_index]
     
+    def pass_go(self):
+        current_player = self.get_current_player()
+        current_player.money += 1
     
     # player logic possibly move to player class
 
-    def player_movement(self, roll): # may need to rename / split up this function into smaller parts.
+    def player_movement(self, roll):
         current_player = self.get_current_player()
-        current_player.current_position += roll # Moves the current player by the roll value
 
-    
+        if current_player.current_position + roll >= 9:
+            print(f'{current_player.first_name} passed go and gets 1$')
+            self.pass_go()
+
+        current_player.current_position = (current_player.current_position + roll) % 9 # Moves the current player by the roll value and loops past go
+
     # property logic
 
     def buy_property(self): # maybe move to player class
