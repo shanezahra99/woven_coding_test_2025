@@ -14,8 +14,8 @@ class Game:
         self.players = []
         self.create_players()
         self.current_turn = 0 # Tracks the current turn in the game
-        self.board = self.game_board() # potentially move to new class?
-        self.rolls = self.dice_roll() # Potentially move to new class? 
+        self.board = self.game_board()
+        self.rolls = self.dice_roll()
 
     def create_players(self):
         p1 = Player("Peter")
@@ -23,6 +23,39 @@ class Game:
         p3 = Player("Charlotte")
         p4 = Player("Sweedal")
         self.players.extend([p1, p2, p3, p4]) # Store the players in a list.
+
+    def game_board(self):
+        try:
+            with open('board.json', 'r') as file:
+                board_data = json.load(file)
+                return board_data
+        except FileNotFoundError:
+            raise FileNotFoundError("board.json not found. Make sure the file exists in the project folder")
+        except json.JSONDecodeError:
+            raise ValueError("board.json is invalid format, ensure it is JSON.")
+
+    def dice_roll(self):
+
+        select_game = input("Select game version (1 or 2): ").strip()
+
+        if select_game == "1":
+            filename = "rolls_1.json"
+        elif select_game == "2":
+            filename = "rolls_2.json"
+        else:
+            print("Invalid choice, defaulting to game 1")
+            filename = "rolls_1.json"
+
+        try:
+            with open(filename, 'r') as file:
+                rolls_data = json.load(file)
+                return rolls_data
+        except FileNotFoundError:
+            print(f"Error: {filename} missing Exiting game.")
+            exit()
+        except json.JSONDecodeError:
+            print(f"Error: {filename} invalid Exiting game.")
+            exit()
 
     def get_current_player(self):
         return self.players[self.current_turn]
@@ -35,7 +68,20 @@ class Game:
         for property_index, property in enumerate(self.board):
            if current_player.current_position == property_index:
                return property
-           
+
+    def player_movement(self, roll):
+            current_player = self.get_current_player()
+
+            if current_player.current_position + roll >= len(self.board):
+                print(f'{current_player.first_name} passed go and gets 1$')
+                self.pass_go()
+
+            current_player.current_position = (current_player.current_position + roll) % len(self.board) # Moves the current player by the roll value and loops past go
+
+    def pass_go(self):
+        current_player = self.get_current_player()
+        current_player.money += 1
+
     def board_ui(self):
         current_player = self.get_current_player()
         board_visual = "" + '\n'
@@ -51,56 +97,15 @@ class Game:
     def get_current_roll(self, roll_index):
         print(f"Rolled: {self.rolls[roll_index]}")
         return self.rolls[roll_index]
-    
-    def pass_go(self):
-        current_player = self.get_current_player()
-        current_player.money += 1
-    
-    # player logic possibly move to player class
-
-    def player_movement(self, roll):
-        current_player = self.get_current_player()
-
-        if current_player.current_position + roll >= len(self.board):
-            print(f'{current_player.first_name} passed go and gets 1$')
-            self.pass_go()
-
-        current_player.current_position = (current_player.current_position + roll) % len(self.board) # Moves the current player by the roll value and loops past go
-
-    def check_winner(self):
-        # check all players balance, if its <=0 whoever has the most money wins
-
-        game_over = False
-
-        for player in self.players:
-            if player.money <= 0:
-                print(f'{player.first_name} is Bankrupt!')
-                player.is_bankrupt = True
-                game_over = True
-
-        winners = []
-
-        if game_over:
-            most_money = -1
-            for player in self.players:
-                if player.money > most_money:
-                    most_money = player.money
-                    winners = [player]
-                elif player.money == most_money:
-                    winners.append(player)
-        self.winners = winners
-        return winners
 
     # property logic
-
-    def buy_property(self): # maybe move to player class
+    def buy_property(self):
         current_player = self.get_current_player()
         current_property = self.get_current_property()
         owner = None
         print(f"{current_player.first_name} currently has ${current_player.money}")
         print(f'{current_player.first_name} landed on property {current_property['name']}')
         colour = current_property.get('colour')
-        
 
         for player in self.players:
             if current_property in player.property_owned: # checks if someone owns the property
@@ -119,7 +124,7 @@ class Game:
                 current_player.money -= current_property.get('price', 0)
                 if current_property.get('type') == 'property':
                     current_player.property_owned.append(current_property)
-    
+
         elif owner == current_player:
             print(f"{current_player.first_name} already owns {current_property['name']}")
 
@@ -143,9 +148,30 @@ class Game:
         print(f"{current_player.first_name} Pays Rent of ${current_property.get('price', 0) * rent_multiplier}")
         current_player.money -= current_property.get('price', 0) * rent_multiplier
 
+    def check_winner(self):
+            # check all players balance, if its <=0 whoever has the most money wins
+            game_over = False
+
+            for player in self.players:
+                if player.money <= 0:
+                    print(f'{player.first_name} is Bankrupt!')
+                    player.is_bankrupt = True
+                    game_over = True
+
+            winners = []
+
+            if game_over:
+                most_money = -1
+                for player in self.players:
+                    if player.money > most_money:
+                        most_money = player.money
+                        winners = [player]
+                    elif player.money == most_money:
+                        winners.append(player)
+            self.winners = winners
+            return winners
 
     # world Logic
-
     def game_loop(self):
 
         print("-------------")
@@ -173,36 +199,3 @@ class Game:
 
             self.next_turn()
             print("----------------------------------------------------")
-    
-    def game_board(self):
-        try:
-            with open('board.json', 'r') as file:
-                board_data = json.load(file)
-                return board_data
-        except FileNotFoundError:
-            print("Error: file not found.")
-        except json.JSONDecodeError:
-            print("Error: Could not decode JSON from file.")
-
-
-    def dice_roll(self):
-
-        select_game = input("Select game version (1 or 2): ").strip()
-
-        if select_game == "1":
-            filename = "rolls_1.json"
-        elif select_game == "2":
-            filename = "rolls_2.json"
-        else:
-            print("Invalid choice, defaulting to game 1")
-            filename = "rolls_1.json"
-
-        try:
-            with open(filename, 'r') as file:
-                rolls_data = json.load(file)
-                return rolls_data
-        except FileNotFoundError:
-            print("Error: file not found.")
-        except json.JSONDecodeError:
-            print("Error: Could not decode JSON from file.")
-

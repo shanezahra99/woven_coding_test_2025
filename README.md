@@ -6,6 +6,9 @@
 ## Scalability
 1. Additional spaces on the board and players can be added to this game.
 
+## Future improvements
+1. Add ability to simulate and Play the game with inputs for each player.
+2. Add ability to create new spaces and add additional players from within the game
 
 ## Woven coding test
 
