@@ -41,9 +41,11 @@ class Game:
         board_visual = "" + '\n'
         for property_index, property in enumerate(self.board):
             if current_player.current_position == property_index:
-                board_visual += f"| 💎{current_player.first_name}💎 {property['name']} |"
+                price = property.get('price', 0)
+                board_visual += f"| 💎{current_player.first_name}💎 {property['name']} ${price} |"
             else:
-                board_visual += f"| {property['name']} |"
+                price = property.get('price', 0)
+                board_visual += f"| {property['name']} ${price} |"
         print(board_visual + '\n' )
 
     def get_properties_owned(self):
@@ -57,6 +59,7 @@ class Game:
     #     print(coloured_properties)
 
     def get_current_roll(self, roll_index):
+        print(f"Rolled: {self.rolls[roll_index]}")
         return self.rolls[roll_index]
     
     def pass_go(self):
@@ -103,7 +106,9 @@ class Game:
         current_player = self.get_current_player()
         current_property = self.get_current_property()
         owner = None
+        print(f"{current_player.first_name} currently has ${current_player.money}")
         print(f'{current_player.first_name} landed on property {current_property['name']}')
+        
 
         for player in self.players:
             if current_property in player.property_owned: # checks if someone owns the property
