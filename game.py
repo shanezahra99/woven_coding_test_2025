@@ -40,11 +40,8 @@ class Game:
         return self.rolls[roll_index]
     
 
-    def pass_go():
-        return None
-
-    def check_winner():
-        return None
+    def get_current_roll(self, roll_index):
+        return self.rolls[roll_index]
     
     
     # player logic possibly move to player class
@@ -63,9 +60,11 @@ class Game:
         ## May need an owner == variable?
         owner = None
 
+        print(f'current player: {current_player.first_name}, current property: {current_property}')
+
         for player in self.players:
-            if current_property['name'] in player.property_owned: # checks if someone owns the property
-                print(f"{player.first_name} owns {current_property['name']}")
+            if current_property in player.property_owned: # checks if someone owns the property
+                print(f"{player.first_name} owns {current_property}")
                 owner = player
                 break
 
@@ -75,7 +74,7 @@ class Game:
             # purchase property
             print(f"{current_player.first_name} has {current_player.money}")
             current_player.money -= current_property['price'] 
-            current_player.property_owned.append(current_property['name'])
+            current_player.property_owned.append(current_property)
             print(f"{current_player.first_name} has {current_player.money}")
         
         elif owner == current_player:
