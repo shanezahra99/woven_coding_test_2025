@@ -1,5 +1,7 @@
 ## Class Design / Initial Notes (SZ)
 
+This was my initial notes sheet to begin and used to re-think the game loop.
+
 indexes 
 
 current_turn = 0

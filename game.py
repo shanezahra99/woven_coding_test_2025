@@ -88,6 +88,7 @@ class Game:
                     winners = [player]
                 elif player.money == most_money:
                     winners.append(player)
+        self.winners = winners
         return winners
 
     # property logic
@@ -152,21 +153,25 @@ class Game:
         print("-------------")
         print("players:")
         print("-------------")
-        for p in my_game.players:
+        for p in self.players:
             print(p.first_name)
         print("-------------")
 
         for roll_index, roll in enumerate(self.rolls):
             current_roll = self.get_current_roll(roll_index) 
-            my_game.player_movement(current_roll)
-            my_game.board_ui()
-            my_game.buy_property()
+            self.player_movement(current_roll)
+            self.board_ui()
+            self.buy_property()
 
-            if len(my_game.check_winner()) > 0:
-                print("Game Over")
+            if len(self.check_winner()) > 0:
+                print("Game Over" + '\n')
+                if len(self.winners) == 1:
+                    print(f"⭐⭐⭐ The winner is {self.winners[0].first_name} with ${self.winners[0].money} left! ⭐⭐⭐" + '\n')
+                else:
+                    print("⭐⭐⭐ It's a tie between:", *[p.first_name for p in self.winners], " left! ⭐⭐⭐" + '\n')
                 exit()
 
-            my_game.next_turn()
+            self.next_turn()
             print("----------------------------------------------------")
     
     def game_board(self):
@@ -200,10 +205,4 @@ class Game:
             print("Error: file not found.")
         except json.JSONDecodeError:
             print("Error: Could not decode JSON from file.")
-
-
-# === Main ===
-if __name__ == "__main__":
-    my_game = Game()
-    my_game.game_loop()
 

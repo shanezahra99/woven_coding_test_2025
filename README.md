@@ -1,3 +1,9 @@
+## How to Run application
+
+1. Run main.py
+2. Input 1 for game 1 or 2 for game 2
+
+
 ## Woven coding test
 
 Your task is to write an application to play the game of Woven Monopoly.
