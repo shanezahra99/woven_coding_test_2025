@@ -1,32 +1,54 @@
 [
-  {"name": "GO", "type": "go"},
-  {"name": "The Burvale", "price": 1, "colour": "Brown", "type": "property"},
-  {"name": "Fast Kebabs", "price": 1, "colour": "Brown", "type": "property"},
-  {"name": "The Grand Tofu", "price": 2, "colour": "Red", "type": "property"},
-  {"name": "Lanzhou Beef Noodle", "price": 2, "colour": "Red", "type": "property"},
-  {"name": "Betty's Burgers", "price": 3, "colour": "Green", "type": "property"},
-  {"name": "YOMG", "price": 3, "colour": "Green", "type": "property"},
-  {"name": "Gami Chicken", "price": 4, "colour": "Blue", "type": "property"},
-  {"name": "Massizim", "price": 4, "colour": "Blue", "type": "property"},
-  {"name": "Sushi Express", "price": 5, "colour": "Yellow", "type": "property"},
-  {"name": "Kebab King", "price": 5, "colour": "Yellow", "type": "property"},
-  {"name": "Pasta Palace", "price": 6, "colour": "Purple", "type": "property"},
-  {"name": "Pizza Town", "price": 6, "colour": "Purple", "type": "property"},
-  {"name": "Burger Bistro", "price": 7, "colour": "Orange", "type": "property"},
-  {"name": "Taco Temple", "price": 7, "colour": "Orange", "type": "property"},
-  {"name": "Ice Cream Island", "price": 8, "colour": "Pink", "type": "property"},
-  {"name": "Donut Den", "price": 8, "colour": "Pink", "type": "property"},
-  {"name": "Waffle World", "price": 9, "colour": "Cyan", "type": "property"},
-  {"name": "Bagel Bay", "price": 9, "colour": "Cyan", "type": "property"},
-  {"name": "Noodle Nirvana", "price": 10, "colour": "Magenta", "type": "property"},
-  {"name": "Rice Realm", "price": 10, "colour": "Magenta", "type": "property"},
-  {"name": "Burger Heaven", "price": 11, "colour": "Teal", "type": "property"},
-  {"name": "Taco Town", "price": 11, "colour": "Teal", "type": "property"},
-  {"name": "Pizza Palace", "price": 12, "colour": "Lime", "type": "property"},
-  {"name": "Pasta Planet", "price": 12, "colour": "Lime", "type": "property"},
-  {"name": "Donut Delight", "price": 13, "colour": "Brown", "type": "property"},
-  {"name": "Burger Bonanza", "price": 13, "colour": "Brown", "type": "property"},
-  {"name": "Sushi Supreme", "price": 14, "colour": "Red", "type": "property"},
-  {"name": "Noodle Nation", "price": 14, "colour": "Red", "type": "property"},
-  {"name": "Pizza Paradise", "price": 15, "colour": "Green", "type": "property"}
+  {
+    "name": "GO",
+    "type": "go"
+  },
+  {
+    "name": "The Burvale",
+    "price": 1,
+    "colour": "Brown",
+    "type": "property"
+  },
+  {
+    "name": "Fast Kebabs",
+    "price": 1,
+    "colour": "Brown",
+    "type": "property"
+  },
+  {
+    "name": "The Grand Tofu",
+    "price": 2,
+    "colour": "Red",
+    "type": "property"
+  },
+  {
+    "name": "Lanzhou Beef Noodle",
+    "price": 2,
+    "colour": "Red",
+    "type": "property"
+  },
+  {
+    "name": "Betty's Burgers",
+    "price": 3,
+    "colour": "Green",
+    "type": "property"
+  },
+  {
+    "name": "YOMG",
+    "price": 3,
+    "colour": "Green",
+    "type": "property"
+  },
+  {
+    "name": "Gami Chicken",
+    "price": 4,
+    "colour": "Blue",
+    "type": "property"
+  },
+  {
+    "name": "Massizim",
+    "price": 4,
+    "colour": "Blue",
+    "type": "property"
+  }
 ]
