@@ -189,8 +189,8 @@ class Game:
         print("-------------")
         print("players:")
         print("-------------")
-        for p in self.players:
-            print(p.first_name)
+        for player in self.players:
+            print(player.first_name)
         print("-------------")
 
         for roll_index, roll in enumerate(self.rolls):
@@ -205,6 +205,15 @@ class Game:
                     print(f"⭐⭐⭐ The winner is {self.winners[0].first_name} with ${self.winners[0].money} left! ⭐⭐⭐" + '\n')
                 else:
                     print("⭐⭐⭐ It's a tie between:", *[p.first_name for p in self.winners], " left! ⭐⭐⭐" + '\n')
+                print("Final list of players money:")
+                for player in self.players:
+                    print(f"{player.first_name}: ${player.money}")
+
+                print(" ")
+                print("Final list of players board position:")
+                for player in self.players:
+                    print(f"{player.first_name}: {self.board[player.current_position]['name']}")
+                print(" ")
                 exit()
 
             self.next_turn()
