@@ -104,7 +104,7 @@ class Game:
         current_property = self.get_current_property()
         owner = None
         print(f"{current_player.first_name} currently has ${current_player.money}")
-        print(f'{current_player.first_name} landed on property {current_property['name']}')
+        print(f"{current_player.first_name} landed on property {current_property['name']}")
         colour = current_property.get('colour')
 
         for player in self.players:
