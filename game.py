@@ -145,8 +145,18 @@ class Game:
     def pay_rent(self, rent_multiplier=1):
         current_player = self.get_current_player()
         current_property = self.get_current_property()
+
+        owner = None
+        for player in self.players:
+            if current_property in player.property_owned:
+                owner = player
+                break
+
         print(f"{current_player.first_name} Pays Rent of ${current_property.get('price', 0) * rent_multiplier}")
         current_player.money -= current_property.get('price', 0) * rent_multiplier
+
+        if owner and owner != current_player:
+            owner.money += current_property.get('price', 0) * rent_multiplier
 
     def check_winner(self):
             # check all players balance, if its <=0 whoever has the most money wins
